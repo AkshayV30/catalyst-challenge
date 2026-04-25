@@ -1,22 +1,11 @@
 from app.router.llm_router import route
-# import json
+from app.utils.json_utils import extract_json
+from app.prompts.templates import jd_parser_prompt
+
 
 async def parse_jd(jd: str):
-          prompt = f"""
-      Extract structured JSON:
+    prompt = jd_parser_prompt(jd)
 
-          {{
-            "role": "",
-            "skills": [],
-            "experience_years": "",
-            "must_have": [],
-            "nice_to_have": []
-          }}
+    raw = await route("jd_parser", prompt)
 
-      JD:
-        {jd}
-      """
-          
-          return await route("jd_parser", prompt)
-
-
+    return extract_json(raw)

@@ -1,22 +1,11 @@
 from app.router.llm_router import route
-# import json
+from app.utils.json_utils import extract_json
+from app.prompts.templates import engagement_prompt
 
-async def engagement(candidate, jd):
-    prompt = f"""
-Simulate recruiter outreach and candidate intent.
 
-Return JSON:
-{{
-  "interest_score": 0-100,
-  "signals": [],
-  "reply": ""
-}}
+async def engagement(candidate: str, jd: str):
+    prompt = engagement_prompt(jd, candidate)
 
-JD:
-{jd}
+    raw = await route("engagement", prompt)
 
-Candidate:
-{candidate}
-"""
-
-    return await route("engagement", prompt)
+    return extract_json(raw)

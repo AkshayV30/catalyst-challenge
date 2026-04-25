@@ -1,23 +1,11 @@
 from app.router.llm_router import route
-import json
+from app.utils.json_utils import extract_json
+from app.prompts.templates import match_prompt
 
-async  def match(jd, candidate):
-    prompt = f"""
-You are a technical recruiter.
 
-Compare JD and candidate.
+async def match(jd: str, candidate: str):
+    prompt = match_prompt(jd, candidate)
 
-Return JSON:
-{{
-  "match_score": 0-100,
-  "reasons": []
-}}
+    raw = await route("matcher", prompt)
 
-JD:
-{jd}
-
-Candidate:
-{candidate}
-"""
-
-    return await route("matcher", prompt)
+    return extract_json(raw)

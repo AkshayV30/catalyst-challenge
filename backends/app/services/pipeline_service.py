@@ -14,6 +14,8 @@ from app.utils.json_utils import extract_json
 from app.utils.filters import prefilter_candidates, postfilter_candidates
 from app.utils.score_weights import resolve_weights
 
+from app.validators.jd_validator import validate_jd
+
 from app.core.loggers import logger
 
 
@@ -70,20 +72,20 @@ async def _parse_jd_safe(jd: str):
     try:
         raw = await parse_jd(jd)
 
-        #  CASE 1: Already parsed JSON (best case)
+       
         if isinstance(raw, dict):
             return raw
 
-        #  CASE 2: String → extract JSON
-        if isinstance(raw, str):
+      
+        elif isinstance(raw, str):
             parsed = extract_json(raw)
 
             if not parsed:
                 raise ValueError("Empty JD JSON")
 
-            return parsed
+            return validate_jd(jd, parsed) 
 
-        #  Unexpected type
+        
         raise TypeError(f"Unsupported JD response type: {type(raw)}")
 
     except Exception as e:

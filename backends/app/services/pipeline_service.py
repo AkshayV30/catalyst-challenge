@@ -55,7 +55,7 @@ async def run_pipeline(jd: str, mode: str = "default"):
     shortlist = build_shortlist(final_results)
 
     return {
-        "jd": structured_jd,
+        "parsed_jd": structured_jd,
         "mode": mode,
         "weights": score_weights,
 
@@ -93,7 +93,13 @@ async def _parse_jd_safe(jd: str):
 
     except Exception as e:
         logger.error(f"JD parsing failed: {e}")
-        raise ValueError("JD parsing failed")
+        return {
+            "role": None,
+            "skills": [],
+            "experience_years": None,
+            "must_have": [],
+            "nice_to_have": []
+            }
 
 
 async def _process_candidate(c, structured_jd):
@@ -106,7 +112,7 @@ async def _process_candidate(c, structured_jd):
             )
 
             engagement_task = asyncio.create_task(
-                engagement(candidate_text, structured_jd)
+                engagement(structured_jd, candidate_text)
             )
 
             match_raw, engagement_raw = await asyncio.gather(
@@ -129,14 +135,14 @@ async def _process_candidate(c, structured_jd):
             return {
                 "candidate": c,
                 "error": str(e),
-                "match": {},
-                "engagement": {}
+                "match": {"match_score": 0, "reasons": []},
+                "engagement": {"interest_score": 0, "signals": [], "reply": ""}
             }
 
 
 def _empty_response(jd, start):
     return {
-        "jd": jd,
+        "parsed_jd": jd,
         "total_candidates": 0,
         "shortlist_count": 0,
         "shortlist": [],

@@ -1,0 +1,155 @@
+[
+  {
+    "job_id": 1,
+    "role": "DevOps Engineer",
+    "job_description": "We are looking for a DevOps Engineer to automate infrastructure, streamline deployments, and improve system reliability across cloud environments.",
+    "key_responsibilities": [
+      "Design and maintain CI/CD pipelines",
+      "Manage containerized applications using Docker and Kubernetes",
+      "Monitor infrastructure and optimize performance",
+      "Automate deployment and scaling processes"
+    ],
+    "qualifications": [
+      "Experience with AWS or GCP",
+      "Strong understanding of Linux systems",
+      "Familiarity with CI/CD tools like Jenkins or GitHub Actions"
+    ],
+    "academic_qualification": "Bachelor’s degree in Computer Science, IT, or related field"
+  },
+  {
+    "job_id": 2,
+    "role": "Python Backend Developer",
+    "job_description": "We are hiring a Python Backend Developer to build scalable APIs and backend systems for high-performance applications.",
+    "key_responsibilities": [
+      "Develop REST APIs using FastAPI or Flask",
+      "Design and optimize database queries",
+      "Integrate third-party services",
+      "Write clean and maintainable backend code"
+    ],
+    "qualifications": [
+      "Strong Python fundamentals",
+      "Experience with backend frameworks",
+      "Knowledge of SQL and databases"
+    ],
+    "academic_qualification": "Bachelor’s degree in Computer Science or Software Engineering"
+  },
+  {
+    "job_id": 3,
+    "role": "Frontend React Developer",
+    "job_description": "We are seeking a React Developer to build modern, responsive user interfaces for web applications.",
+    "key_responsibilities": [
+      "Develop UI components using React",
+      "Optimize frontend performance",
+      "Collaborate with backend teams",
+      "Ensure responsive design across devices"
+    ],
+    "qualifications": [
+      "Strong JavaScript and React skills",
+      "Understanding of HTML and CSS",
+      "Experience with frontend tooling"
+    ],
+    "academic_qualification": "Bachelor’s degree in Computer Science or equivalent practical experience"
+  },
+  {
+    "job_id": 4,
+    "role": "Data Engineer",
+    "job_description": "We are looking for a Data Engineer to design and maintain data pipelines for large-scale data processing systems.",
+    "key_responsibilities": [
+      "Build ETL pipelines",
+      "Manage large datasets",
+      "Optimize data workflows",
+      "Ensure data quality and reliability"
+    ],
+    "qualifications": [
+      "Strong SQL and Python skills",
+      "Experience with ETL tools",
+      "Knowledge of data platforms"
+    ],
+    "academic_qualification": "Bachelor’s or Master’s degree in Computer Science, Data Engineering, or related field"
+  },
+  {
+    "job_id": 5,
+    "role": "Site Reliability Engineer",
+    "job_description": "We are hiring an SRE to ensure high availability, performance, and reliability of production systems.",
+    "key_responsibilities": [
+      "Monitor system health and uptime",
+      "Automate operational tasks",
+      "Handle incident response",
+      "Improve system reliability"
+    ],
+    "qualifications": [
+      "Experience with monitoring tools",
+      "Strong Linux and debugging skills",
+      "Knowledge of distributed systems"
+    ],
+    "academic_qualification": "Bachelor’s degree in Computer Science or related discipline"
+  },
+  {
+    "job_id": 6,
+    "role": "Cloud Engineer",
+    "job_description": "We are seeking a Cloud Engineer to design, deploy, and manage cloud infrastructure for scalable applications.",
+    "key_responsibilities": [
+      "Provision infrastructure using Terraform",
+      "Manage cloud services and networking",
+      "Optimize cloud costs",
+      "Ensure security and compliance"
+    ],
+    "qualifications": [
+      "Strong AWS or Azure knowledge",
+      "Experience with Infrastructure as Code",
+      "Understanding of networking and IAM"
+    ],
+    "academic_qualification": "Bachelor’s degree in Computer Science, IT, or Cloud Computing"
+  },
+  {
+    "job_id": 7,
+    "role": "AI/ML Engineer",
+    "job_description": "We are hiring an AI/ML Engineer to build intelligent systems and deploy machine learning models.",
+    "key_responsibilities": [
+      "Train and optimize ML models",
+      "Work with large datasets",
+      "Deploy models into production",
+      "Collaborate with data and engineering teams"
+    ],
+    "qualifications": [
+      "Strong ML fundamentals",
+      "Experience with Python ML libraries",
+      "Understanding of data preprocessing"
+    ],
+    "academic_qualification": "Bachelor’s or Master’s degree in AI, Data Science, or Computer Science"
+  },
+  {
+    "job_id": 8,
+    "role": "Security Engineer",
+    "job_description": "We are looking for a Security Engineer to implement and maintain secure systems and practices across infrastructure.",
+    "key_responsibilities": [
+      "Perform vulnerability assessments",
+      "Implement security controls",
+      "Monitor threats and incidents",
+      "Ensure compliance with standards"
+    ],
+    "qualifications": [
+      "Knowledge of cybersecurity principles",
+      "Experience with security tools",
+      "Understanding of DevSecOps practices"
+    ],
+    "academic_qualification": "Bachelor’s degree in Cybersecurity, IT, or related field"
+  },
+  {
+    "job_id": 9,
+    "role": "Platform Engineer",
+    "job_description": "We are hiring a Platform Engineer to build internal platforms that improve developer productivity and system scalability.",
+    "key_responsibilities": [
+      "Build internal developer tools",
+      "Manage Kubernetes platforms",
+      "Improve CI/CD systems",
+      "Enhance developer experience"
+    ],
+    "qualifications": [
+      "Strong Kubernetes knowledge",
+      "Experience with CI/CD systems",
+      "Understanding of system design"
+    ],
+    "academic_qualification": "Bachelor’s degree in Computer Science or equivalent experience"
+  }
+]

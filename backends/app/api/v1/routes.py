@@ -1,8 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import HTMLResponse
-
-from app.services.pipeline import run_pipeline
-
+from app.services.pipeline_service import run_pipeline
+from app.core.metrics import metrics
 
 router = APIRouter()
 
@@ -21,17 +20,17 @@ def root():
     </html>
     """
 
-
 @router.post("/scout")
-def scout(jd: dict):
-    try:
-        if "jd" not in jd:
-            raise HTTPException(status_code=400, detail="Missing 'jd' field")
+async def scout(payload: dict):
+    jd = payload.get("jd")
 
-        return run_pipeline(jd["jd"])
+    if not jd:
+        raise HTTPException(status_code=400, detail="Missing 'jd' field")
 
-    except Exception as e:
-        return {
-            "status": "error",
-            "message": str(e)
-        }
+    return await run_pipeline(jd)
+
+
+
+@router.get("/metrics")
+def get_metrics():
+    return metrics.snapshot()

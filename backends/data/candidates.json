@@ -1,0 +1,174 @@
+[
+
+  {
+    "id": 1,
+    "level": "beginner",
+    "name": "Kiran Kumar",
+    "role": "Fresher DevOps Trainee",
+    "experience_years": 0,
+    "summary": "Recent graduate with basic DevOps and cloud exposure.",
+    "profile": "Kiran has hands-on practice with Docker, GitHub Actions, and AWS Free Tier deployments. Strong Linux basics and eager to learn.",
+    "skills": ["Docker", "GitHub Actions", "Linux", "AWS (basic)", "Git"],
+    "tools": ["VS Code", "GitHub"],
+    "domain": "DevOps"
+  },
+  {
+    "id": 2,
+    "level": "beginner",
+    "name": "Pooja Sharma",
+    "role": "Cloud Intern",
+    "experience_years": 0.5,
+    "summary": "Intern with exposure to AWS and infra basics.",
+    "profile": "Worked on EC2, S3, and basic Terraform scripts during internship.",
+    "skills": ["AWS", "Terraform (basic)", "Linux", "Python (basic)"],
+    "tools": ["AWS Console", "Git"],
+    "domain": "Cloud"
+  },
+  {
+    "id": 3,
+    "level": "beginner",
+    "name": "Rahul Nair",
+    "role": "Junior Backend Engineer",
+    "experience_years": 0,
+    "summary": "Backend fresher with API development skills.",
+    "profile": "Built FastAPI apps and experimented with Docker containers.",
+    "skills": ["Python", "FastAPI", "Flask", "Docker (basic)", "SQL"],
+    "tools": ["Postman", "VS Code"],
+    "domain": "Backend"
+  },
+  {
+    "id": 4,
+    "level": "beginner",
+    "name": "Neha Verma",
+    "role": "DevOps Learner",
+    "experience_years": 0,
+    "summary": "Self-taught DevOps enthusiast.",
+    "profile": "Built CI/CD pipelines using Jenkins and deployed Docker apps.",
+    "skills": ["Jenkins", "Docker", "GitHub Actions", "Linux"],
+    "tools": ["Minikube", "Git"],
+    "domain": "DevOps"
+  },
+  {
+    "id": 5,
+    "level": "beginner",
+    "name": "Aditya Singh",
+    "role": "Graduate Engineer Trainee",
+    "experience_years": 0.2,
+    "summary": "Trainee with scripting and automation exposure.",
+    "profile": "Learning Bash automation and CI/CD fundamentals.",
+    "skills": ["Bash", "Python", "Linux", "Git"],
+    "tools": ["Jenkins (basic)"],
+    "domain": "DevOps"
+  },
+
+{
+    "id": 6,
+    "level": "intermediate",
+    "name": "Rohit Mehta",
+    "role": "Junior DevOps Engineer",
+    "experience_years": 1.5,
+    "summary": "DevOps engineer with CI/CD and cloud basics.",
+    "profile": "Worked on Jenkins pipelines and AWS deployments.",
+    "skills": ["AWS", "Docker", "Jenkins", "Linux", "Bash"],
+    "tools": ["Terraform (basic)", "GitHub Actions"],
+    "domain": "DevOps"
+  },
+  {
+    "id": 7,
+    "level": "intermediate",
+    "name": "Ananya Iyer",
+    "role": "DevOps Engineer",
+    "experience_years": 3,
+    "summary": "Strong cloud + Kubernetes experience.",
+    "profile": "Designed CI/CD pipelines and automated infra using Terraform.",
+    "skills": ["AWS", "Kubernetes", "Docker", "Terraform", "Python"],
+    "tools": ["Prometheus", "Grafana"],
+    "domain": "DevOps"
+  },
+  {
+    "id": 8,
+    "level": "intermediate",
+    "name": "Sneha Kapoor",
+    "role": "Backend Engineer",
+    "experience_years": 4,
+    "summary": "Backend engineer with cloud exposure.",
+    "profile": "Built APIs using FastAPI and worked with AWS services.",
+    "skills": ["Python", "FastAPI", "AWS", "Docker"],
+    "tools": ["Redis", "GitHub Actions"],
+    "domain": "Backend"
+  },
+  {
+    "id": 9,
+    "level": "intermediate",
+    "name": "Megha Choudhary",
+    "role": "Cloud Engineer",
+    "experience_years": 3,
+    "summary": "Cloud infra and automation specialist.",
+    "profile": "Worked with Terraform, IAM, and AWS infra design.",
+    "skills": ["AWS", "Terraform", "CloudFormation", "Networking"],
+    "tools": ["AWS CLI"],
+    "domain": "Cloud"
+  },
+  {
+    "id": 10,
+    "level": "intermediate",
+    "name": "Kiran Patel",
+    "role": "Site Reliability Engineer",
+    "experience_years": 4,
+    "summary": "SRE focused on monitoring and uptime.",
+    "profile": "Handled production Kubernetes clusters and monitoring.",
+    "skills": ["Kubernetes", "Prometheus", "Grafana", "Python"],
+    "tools": ["ELK Stack", "PagerDuty"],
+    "domain": "SRE"
+  },
+
+
+  {
+    "id": 11,
+    "level": "advanced",
+    "name": "Vikram Desai",
+    "role": "Senior DevOps Engineer",
+    "experience_years": 6,
+    "summary": "Expert in scalable cloud infrastructure.",
+    "profile": "Led DevOps transformations and built cloud-native systems.",
+    "skills": ["AWS", "Kubernetes", "Terraform", "Ansible"],
+    "tools": ["ArgoCD", "Helm"],
+    "domain": "DevOps"
+  },
+  {
+    "id": 12,
+    "level": "advanced",
+    "name": "Siddharth Jain",
+    "role": "Security Engineer",
+    "experience_years": 5,
+    "summary": "DevSecOps specialist.",
+    "profile": "Implemented security pipelines and vulnerability scanning.",
+    "skills": ["Security", "DevSecOps", "CI/CD"],
+    "tools": ["OWASP ZAP", "Trivy"],
+    "domain": "Security"
+  },
+  {
+    "id": 13,
+    "level": "advanced",
+    "name": "Nikhil Gupta",
+    "role": "Senior Platform Engineer",
+    "experience_years": 7,
+    "summary": "Platform engineering expert.",
+    "profile": "Built internal developer platforms and scaling systems.",
+    "skills": ["Kubernetes", "CI/CD", "Terraform", "Go"],
+    "tools": ["Backstage", "ArgoCD"],
+    "domain": "Platform"
+  },
+  {
+    "id": 14,
+    "level": "advanced",
+    "name": "Arjun Reddy",
+    "role": "Engineering Manager",
+    "experience_years": 9,
+    "summary": "Leadership + architecture focus.",
+    "profile": "Led DevOps teams and platform strategy.",
+    "skills": ["Architecture", "Leadership", "AWS"],
+    "tools": ["Azure DevOps"],
+    "domain": "Management"
+  }
+]

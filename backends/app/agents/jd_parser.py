@@ -1,22 +1,22 @@
-from app.core.ollama_client import run_model
-from app.core.config import MODELS
-import json
+from app.router.llm_router import route
+# import json
+
+async def parse_jd(jd: str):
+          prompt = f"""
+      Extract structured JSON:
+
+          {{
+            "role": "",
+            "skills": [],
+            "experience_years": "",
+            "must_have": [],
+            "nice_to_have": []
+          }}
+
+      JD:
+        {jd}
+      """
+          
+          return await route("jd_parser", prompt)
 
 
-def parse_jd(jd: str):
-    prompt = f"""
-Extract structured JSON:
-
-{{
-  "role": "",
-  "skills": [],
-  "experience_years": "",
-  "must_have": [],
-  "nice_to_have": []
-}}
-
-JD:
-{jd}
-"""
-
-    return run_model(MODELS["jd_parser"], prompt)

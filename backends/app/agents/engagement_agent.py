@@ -1,7 +1,7 @@
-from app.core.ollama_client import run_model
-from app.core.config import MODELS
+from app.router.llm_router import route
+# import json
 
-def engagement(candidate, jd):
+async def engagement(candidate, jd):
     prompt = f"""
 Simulate recruiter outreach and candidate intent.
 
@@ -19,4 +19,4 @@ Candidate:
 {candidate}
 """
 
-    return run_model(MODELS["engagement"], prompt)
+    return await route("engagement", prompt)

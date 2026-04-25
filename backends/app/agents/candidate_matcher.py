@@ -1,7 +1,7 @@
-from app.core.ollama_client import run_model
-from app.core.config import MODELS
+from app.router.llm_router import route
+import json
 
-def match(jd, candidate):
+async  def match(jd, candidate):
     prompt = f"""
 You are a technical recruiter.
 
@@ -20,4 +20,4 @@ Candidate:
 {candidate}
 """
 
-    return run_model(MODELS["matcher"], prompt)
+    return await route("matcher", prompt)

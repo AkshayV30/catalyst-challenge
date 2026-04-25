@@ -13,6 +13,7 @@ from app.utils.formatter import format_candidate
 from app.utils.json_utils import extract_json
 from app.utils.filters import prefilter_candidates, postfilter_candidates
 from app.utils.score_weights import resolve_weights
+from app.utils.mode_resolver import resolve_mode_config
 
 from app.validators.jd_validator import validate_jd
 
@@ -25,14 +26,16 @@ SEMAPHORE = asyncio.Semaphore(5)
 async def run_pipeline(jd: str, mode: str = "default"):
     start = time.time()
 
-    score_weights = resolve_weights({"mode": mode})
+    mode_config = resolve_mode_config(mode)
+    score_weights = resolve_weights(mode_config)
+ 
 
     structured_jd = await _parse_jd_safe(jd)
 
     candidates = load_candidates()
 
 
-    prefiltered = prefilter_candidates(candidates, structured_jd, mode)
+    prefiltered = prefilter_candidates(candidates, structured_jd, mode_config)
 
     logger.info(
         f"Prefilter ({mode}): {len(prefiltered)}/{len(candidates)}"

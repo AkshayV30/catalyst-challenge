@@ -1,4 +1,4 @@
-from app.core.config import MODELS
+from app.configs.core_config import MODELS
 from app.core.ollama_client import generate
 from app.core.loggers import logger
 

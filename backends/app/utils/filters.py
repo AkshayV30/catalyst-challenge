@@ -8,24 +8,13 @@ def normalize(skills: List[str]) -> set:
 def prefilter_candidates(
     candidates: List[Dict],
     jd: Dict,
-    mode: str = "default"
+    mode_config: dict
 ) -> List[Dict]:
-    """
-    Fast deterministic filtering BEFORE LLM
-    Mode-aware filtering (strict vs loose hiring)
-    """
+   
 
-    MIN_OVERLAP_MAP = {
-        "very_loose": 1,   
-        "loose": 1,
-        "balanced": 2,
-        "default": 2,
-        "focused": 3,
-        "strict": 3,
-        "very_strict": 4,
-    }
-
-    min_skill_overlap = MIN_OVERLAP_MAP.get(mode, 2)
+    filter_cfg = mode_config["filter"]
+    min_skill_overlap = filter_cfg["min_skill_overlap"]
+    must_have_required = filter_cfg["must_have_required"]
 
     jd_skills = normalize(jd.get("skills"))
     jd_must_have = normalize(jd.get("must_have"))
@@ -51,7 +40,7 @@ def prefilter_candidates(
             continue
 
   
-        if mode in ["strict", "very_strict"]:
+        if must_have_required:
             if not must_have_match(candidate_skills, jd_must_have):
                 continue
 
@@ -61,7 +50,7 @@ def prefilter_candidates(
         candidate_copy["_prefilter"] = {
             "skill_overlap": list(overlap),
             "overlap_score": len(overlap),
-            "mode": mode
+            "mode": mode_config
         }
 
         filtered.append(candidate_copy)
@@ -73,10 +62,7 @@ def postfilter_candidates(
     candidates: List[Dict],
     max_results: int = 10
 ) -> List[Dict]:
-    """
-    Final pruning AFTER LLM scoring
-    """
-
+  
     return sorted(
         candidates,
         key=lambda x: (

@@ -14,30 +14,34 @@ def resolve_weights(input_weights: dict | None):
     MIN_MATCH = 0.5
     MAX_MATCH = 0.9
 
-    # 1. Mode-based
-    if input_weights and "mode" in input_weights:
-        mode = input_weights["mode"]
-        weights = MODE_WEIGHTS.get(mode, MODE_WEIGHTS[DEFAULT_MODE])
-        match = weights["match"]
+    match = None
 
-    # 2. Custom weight (slider input)
-    elif input_weights and "match" in input_weights:
+    if input_weights and "match" in input_weights:
         try:
             match = float(input_weights["match"])
         except (ValueError, TypeError):
-            match = MODE_WEIGHTS[DEFAULT_MODE]["match"]
+            match = None
 
-    # 3. Default
-    else:
+ 
+    if match is None and input_weights and "mode" in input_weights:
+        mode = input_weights["mode"]
+        match = MODE_WEIGHTS.get(mode, MODE_WEIGHTS[DEFAULT_MODE])["match"]
+
+   
+    if match is None:
         match = MODE_WEIGHTS[DEFAULT_MODE]["match"]
 
-    # 4. Clamp
+   
     match = max(MIN_MATCH, min(MAX_MATCH, match))
 
-    # 5. Normalize (ensure sum = 1)
+  
     engagement = 1 - match
 
+   
+    match = round(match, 2)
+    engagement = round(1 - match, 2)
+
     return {
-        "match": round(match, 2),
-        "engagement": round(engagement, 2),
+        "match": match,
+        "engagement": engagement,
     }

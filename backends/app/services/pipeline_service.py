@@ -1,5 +1,3 @@
-# app/services/pipeline_service.py
-
 import time
 import asyncio
 
@@ -21,42 +19,44 @@ from app.core.loggers import logger
 SEMAPHORE = asyncio.Semaphore(5)
 
 
-async def run_pipeline(jd: str, score_weights: dict):
+async def run_pipeline(jd: str, score_weights: dict, mode: str = "default"):
     start = time.time()
 
-  
     structured_jd = await _parse_jd_safe(jd)
 
-
     candidates = load_candidates()
-    prefiltered = prefilter_candidates(candidates, structured_jd)
 
-    logger.info(f"Prefilter: {len(prefiltered)}/{len(candidates)}")
+
+    prefiltered = prefilter_candidates(candidates, structured_jd, mode)
+
+    logger.info(
+        f"Prefilter ({mode}): {len(prefiltered)}/{len(candidates)}"
+    )
 
     if not prefiltered:
         return _empty_response(structured_jd, start)
-
 
     results = await asyncio.gather(
         *[_process_candidate(c, structured_jd) for c in prefiltered]
     )
 
-
     ranked = rank(results, score_weights)
-
 
     final_results = postfilter_candidates(ranked, max_results=10)
 
-   
     shortlist = build_shortlist(final_results)
 
- 
     return {
         "jd": structured_jd,
+        "mode": mode,
+        "weights": score_weights,
+
         "total_candidates": len(prefiltered),
         "shortlist_count": len(shortlist),
+
         "shortlist": shortlist,
         "results_raw": final_results,
+
         "latency": round(time.time() - start, 2)
     }
 

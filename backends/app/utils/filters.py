@@ -2,17 +2,30 @@ from typing import List, Dict
 
 
 def normalize(skills: List[str]) -> set:
-    return set(s.lower().strip() for s in skills or [])
+    return set(s.lower().strip() for s in (skills or []))
 
 
 def prefilter_candidates(
     candidates: List[Dict],
     jd: Dict,
-    min_skill_overlap: int = 1
+    mode: str = "default"
 ) -> List[Dict]:
     """
     Fast deterministic filtering BEFORE LLM
+    Mode-aware filtering (strict vs loose hiring)
     """
+
+    MIN_OVERLAP_MAP = {
+        "very_loose": 0,
+        "loose": 1,
+        "balanced": 2,
+        "default": 2,
+        "focused": 3,
+        "strict": 3,
+        "very_strict": 4,
+    }
+
+    min_skill_overlap = MIN_OVERLAP_MAP.get(mode, 2)
 
     jd_skills = normalize(jd.get("skills"))
     jd_must_have = normalize(jd.get("must_have"))
@@ -26,21 +39,23 @@ def prefilter_candidates(
 
         overlap = jd_skills.intersection(candidate_skills)
 
-       
+     
         if len(overlap) < min_skill_overlap:
             continue
 
+       
         if not experience_match(candidate_exp, jd_exp):
             continue
 
-        if not must_have_match(candidate_skills, jd_must_have):
-            continue
+      
+        if mode in ["strict", "very_strict"]:
+            if not must_have_match(candidate_skills, jd_must_have):
+                continue
 
         c["_prefilter"] = {
             "skill_overlap": list(overlap),
             "overlap_score": len(overlap),
-            "experience_ok": True,
-            "must_have_ok": True
+            "mode": mode
         }
 
         filtered.append(c)

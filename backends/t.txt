@@ -1,0 +1,58 @@
+.
+├── app
+│   ├── agents
+│   │   ├── engagement.py
+│   │   ├── __init__.py
+│   │   ├── jd_parser.py
+│   │   ├── matcher.py
+│   │   └── __pycache__
+│   │       ├── engagement.cpython-312.pyc
+│   │       ├── __init__.cpython-312.pyc
+│   │       ├── jd_parser.cpython-312.pyc
+│   │       └── matcher.cpython-312.pyc
+│   ├── api
+│   │   ├── __init__.py
+│   │   ├── __pycache__
+│   │   │   └── __init__.cpython-312.pyc
+│   │   └── v1
+│   │       ├── __init__.py
+│   │       ├── __pycache__
+│   │       │   ├── __init__.cpython-312.pyc
+│   │       │   └── routes.cpython-312.pyc
+│   │       └── routes.py
+│   ├── core
+│   │   ├── config.py
+│   │   ├── errors.py
+│   │   ├── __init__.py
+│   │   ├── logger.py
+│   │   ├── ollama_client.py
+│   │   └── __pycache__
+│   │       ├── config.cpython-312.pyc
+│   │       ├── __init__.cpython-312.pyc
+│   │       └── ollama_client.cpython-312.pyc
+│   ├── main.py
+│   ├── old.py
+│   ├── __pycache__
+│   │   └── main.cpython-312.pyc
+│   ├── schemas
+│   │   ├── __init__.py
+│   │   ├── reponse.py
+│   │   └── request.py
+│   └── services
+│       ├── candidates_store.py
+│       ├── __init__.py
+│       ├── pipeline.py
+│       ├── __pycache__
+│       │   ├── __init__.cpython-312.pyc
+│       │   ├── pipeline.cpython-312.pyc
+│       │   └── ranking.cpython-312.pyc
+│       └── ranking.py
+├── data
+│   ├── candidates.json
+│   └── job_description.json
+├── pyproject.toml
+├── README.md
+├── t.txt
+└── uv.lock
+
+15 directories, 41 files

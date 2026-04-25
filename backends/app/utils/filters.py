@@ -16,7 +16,7 @@ def prefilter_candidates(
     """
 
     MIN_OVERLAP_MAP = {
-        "very_loose": 0,
+        "very_loose": 1,   
         "loose": 1,
         "balanced": 2,
         "default": 2,
@@ -37,28 +37,34 @@ def prefilter_candidates(
         candidate_skills = normalize(c.get("skills"))
         candidate_exp = c.get("experience_years", 0)
 
-        overlap = jd_skills.intersection(candidate_skills)
+     
+        if jd_skills:
+            overlap = jd_skills.intersection(candidate_skills)
+
+            if len(overlap) < min_skill_overlap:
+                continue
+        else:
+            overlap = set()
 
      
-        if len(overlap) < min_skill_overlap:
-            continue
-
-       
         if not experience_match(candidate_exp, jd_exp):
             continue
 
-      
+  
         if mode in ["strict", "very_strict"]:
             if not must_have_match(candidate_skills, jd_must_have):
                 continue
 
-        c["_prefilter"] = {
+
+        candidate_copy = c.copy()
+
+        candidate_copy["_prefilter"] = {
             "skill_overlap": list(overlap),
             "overlap_score": len(overlap),
             "mode": mode
         }
 
-        filtered.append(c)
+        filtered.append(candidate_copy)
 
     return filtered
 
@@ -95,4 +101,4 @@ def must_have_match(candidate_skills, jd_must_have):
     if not jd_must_have:
         return True
 
-    return all(skill in candidate_skills for skill in jd_must_have)
+    return jd_must_have.issubset(candidate_skills)

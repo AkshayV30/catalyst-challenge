@@ -26,15 +26,13 @@ def root():
 @router.post("/scout")
 async def scout(payload: dict):
     jd = payload.get("jd")
-    weights_input = payload.get("weights", {})
+    mode = payload.get("mode", "default") 
 
     if not jd:
         raise HTTPException(status_code=400, detail="Missing 'jd' field")
 
-    weights = resolve_weights(weights_input)
-    mode = weights_input.get("mode", "default")
 
-    return await run_pipeline(jd, weights, mode)
+    return await run_pipeline(jd, mode)
 
 
 

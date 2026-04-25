@@ -6,7 +6,12 @@ from app.core.loggers import logger
 def extract_json(text: str) -> dict:
     if not text:
         return {}
+        
+    if isinstance(text, dict):
+        return text
 
+    if not isinstance(text, str):
+        return {}
    
     try:
         return json.loads(text)

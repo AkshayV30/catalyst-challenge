@@ -12,6 +12,7 @@ from app.utils.data_loader import load_candidates
 from app.utils.formatter import format_candidate
 from app.utils.json_utils import extract_json
 from app.utils.filters import prefilter_candidates, postfilter_candidates
+from app.utils.score_weights import resolve_weights
 
 from app.core.loggers import logger
 
@@ -19,8 +20,10 @@ from app.core.loggers import logger
 SEMAPHORE = asyncio.Semaphore(5)
 
 
-async def run_pipeline(jd: str, score_weights: dict, mode: str = "default"):
+async def run_pipeline(jd: str, mode: str = "default"):
     start = time.time()
+
+    score_weights = resolve_weights({"mode": mode})
 
     structured_jd = await _parse_jd_safe(jd)
 
@@ -66,12 +69,22 @@ async def run_pipeline(jd: str, score_weights: dict, mode: str = "default"):
 async def _parse_jd_safe(jd: str):
     try:
         raw = await parse_jd(jd)
-        parsed = extract_json(raw)
 
-        if not parsed:
-            raise ValueError("Empty JD JSON")
+        #  CASE 1: Already parsed JSON (best case)
+        if isinstance(raw, dict):
+            return raw
 
-        return parsed
+        #  CASE 2: String → extract JSON
+        if isinstance(raw, str):
+            parsed = extract_json(raw)
+
+            if not parsed:
+                raise ValueError("Empty JD JSON")
+
+            return parsed
+
+        #  Unexpected type
+        raise TypeError(f"Unsupported JD response type: {type(raw)}")
 
     except Exception as e:
         logger.error(f"JD parsing failed: {e}")

@@ -1,23 +1,27 @@
 def jd_parser_prompt(jd: str) -> str:
     return f"""
-You MUST return ONLY valid JSON. No explanation. No markdown.
+You are a strict information extraction system.
 
-Schema:
+RULES:
+- Extract ONLY what is explicitly present in the text
+- Do NOT infer or assume anything
+- If a field is missing, return empty list or null
+- Do NOT add explanations
+- Output MUST be valid JSON only
+
+SCHEMA:
 {{
-  "role": "string",
-  "skills": ["string"],
-  "experience_years": number,
-  "must_have": ["string"],
-  "nice_to_have": ["string"]
+  "role": string | null,
+  "skills": string[],
+  "experience_years": number | null,
+  "must_have": string[],
+  "nice_to_have": string[]
 }}
 
-Rules:
-- Output strictly JSON
-- No text before or after JSON
-- No code blocks
-
-JD:
+JOB DESCRIPTION:
 {jd}
+
+Return ONLY JSON:
 """
 
 

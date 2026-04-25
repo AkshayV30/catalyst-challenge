@@ -1,23 +1,26 @@
-from app.configs.core_config import MODELS
 from app.core.ollama_client import generate
 from app.core.loggers import logger
-
-
-MODEL_PRIORITY = {
-    "jd_parser": [MODELS["jd_parser"], "gemma:2b-instruct"],
-    "matcher": [MODELS["matcher"], "phi:latest"],
-    "engagement": [MODELS["engagement"], "mistral:latest"]
-}
+from app.configs.llm_config import LLM_CONFIG
 
 
 async def route(task: str, prompt: str):
-    models = MODEL_PRIORITY.get(task, [])
+    config = LLM_CONFIG.get(task)
 
-    for model in models:
+    if not config:
+        raise ValueError(f"Unknown task: {task}")
+
+    seen = set()
+
+    for model in config.models:
+        if  model in seen:
+            continue
+        seen.add(model)
+
         try:
             return await generate(model, prompt)
-        except Exception:
-            logger.warning(f"Fallback triggered → {model}")
+
+        except Exception as e:
+            logger.warning(f"[{task}] model failed: {model} → {e}")
             continue
 
-    raise RuntimeError("All models failed")
+    raise RuntimeError(f"{task}: all models failed")

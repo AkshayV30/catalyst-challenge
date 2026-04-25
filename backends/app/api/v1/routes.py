@@ -4,7 +4,7 @@ from fastapi.responses import HTMLResponse
 from app.services.pipeline_service import run_pipeline
 from app.core.metrics import metrics
 
-from app.utils.score_weights import resolve_weights
+
 
 router = APIRouter()
 

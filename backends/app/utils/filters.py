@@ -1,62 +1,60 @@
 from typing import List, Dict
 
 
-def normalize(skills: List[str]) -> set:
-    return set(s.lower().strip() for s in (skills or []))
+def normalize(text: str) -> str:
+    return text.lower().replace(" ", "")
 
+def soft_match(required, available):
+    return any(
+        normalize(r) in normalize(a) or normalize(a) in normalize(r)
+        for r in required
+        for a in available
+    )
 
-def prefilter_candidates(
-    candidates: List[Dict],
-    jd: Dict,
-    mode_config: dict
-) -> List[Dict]:
-   
-
-    filter_cfg = mode_config["filter"]
-    min_skill_overlap = filter_cfg["min_skill_overlap"]
-    must_have_required = filter_cfg["must_have_required"]
-
-    jd_skills = normalize(jd.get("skills"))
-    jd_must_have = normalize(jd.get("must_have"))
-    jd_exp = jd.get("experience_years")
-
+def prefilter_candidates(candidates, jd, mode_config):
     filtered = []
 
+    jd_skills = jd.get("skills", [])
+    must_have = jd.get("must_have", [])
+
+    threshold = mode_config.filter.get("min_score", 1) if hasattr(mode_config, "filter") else 1
+
     for c in candidates:
-        candidate_skills = normalize(c.get("skills"))
-        candidate_exp = c.get("experience_years", 0)
 
-     
-        if jd_skills:
-            overlap = jd_skills.intersection(candidate_skills)
+       
+        candidate_skills = c.get("skills", [])
+        candidate_tools = c.get("tools", [])
+        all_skills = candidate_skills + candidate_tools
 
-            if len(overlap) < min_skill_overlap:
-                continue
-        else:
-            overlap = set()
+        
+        overlap = [
+            s for s in all_skills
+            if any(
+                normalize(s) in normalize(j) or normalize(j) in normalize(s)
+                for j in jd_skills
+            )
+        ]
 
-     
-        if not experience_match(candidate_exp, jd_exp):
-            continue
+        overlap_score = len(overlap)
 
-  
-        if must_have_required:
-            if not must_have_match(candidate_skills, jd_must_have):
-                continue
+       
+        must_have_hits = 1 if soft_match(must_have, all_skills) else 0
 
+       
+        score = overlap_score + (must_have_hits * 2)
 
-        candidate_copy = c.copy()
-
-        candidate_copy["_prefilter"] = {
-            "skill_overlap": list(overlap),
-            "overlap_score": len(overlap),
-            "mode": mode_config
+       
+        c["_prefilter"] = {
+            "overlap": overlap,
+            "score": score,
+            "must_have_hits": must_have_hits
         }
 
-        filtered.append(candidate_copy)
+       
+        if score >= threshold:
+            filtered.append(c)
 
     return filtered
-
 
 def postfilter_candidates(
     candidates: List[Dict],

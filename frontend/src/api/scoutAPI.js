@@ -1,11 +1,21 @@
-export async function runScouting({ jd, mode }) {
-  const res = await fetch("http://localhost:8000/scout", {
+const BASE_URL = "http://localhost:8008"
+
+async function request(endpoint, payload) {
+  const res = await fetch(`${BASE_URL}${endpoint}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ jd, mode })
+    body: JSON.stringify(payload),
   })
 
-  if (!res.ok) throw new Error("API failed")
+  if (!res.ok) {
+    throw new Error(await res.text())
+  }
 
-  return await res.json()
+  return res.json()
 }
+
+export const scoutAPI = {
+  run: (payload) => request("/scout", payload),
+}
+
+// add enpoints for candidatea snd jobs

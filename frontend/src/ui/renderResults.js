@@ -1,16 +1,15 @@
 export function renderResults(list = []) {
-  const container = document.querySelector("#resultsContainer")
+  const container = document.querySelector("#results")
   container.innerHTML = ""
 
   list.forEach((c) => {
-    const div = document.createElement("div")
-    div.className = "card result-card"
+    const el = document.createElement("div")
+    el.className = "card result-card"
 
-    div.innerHTML = `
+    el.innerHTML = `
       <div class="rank">#${c.rank}</div>
       <h3>${c.name}</h3>
-      <p><b>Role:</b> ${c.role}</p>
-      <p><b>Experience:</b> ${c.experience}</p>
+      <p>${c.role}</p>
 
       <div class="scores">
         <span>Match: ${c.match_score}</span>
@@ -23,6 +22,6 @@ export function renderResults(list = []) {
       </div>
     `
 
-    container.appendChild(div)
+    container.appendChild(el)
   })
 }

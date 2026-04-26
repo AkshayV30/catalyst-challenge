@@ -1,18 +1,15 @@
-export function showLoading(statusBox) {
-  statusBox.innerHTML = `
-    <div class="loader"></div>
-    Running AI Pipeline...
-  `
+export function setStatus(text) {
+  document.querySelector("#statusBox").innerText = text
 }
 
-export function showIdle(statusBox) {
-  statusBox.innerText = "Idle"
+export function showLoading() {
+  setStatus("Running AI Pipeline...")
 }
 
-export function showDone(statusBox) {
-  statusBox.innerText = "Completed"
+export function showDone() {
+  setStatus("Completed")
 }
 
-export function showError(statusBox) {
-  statusBox.innerText = "Error"
+export function showError() {
+  setStatus("Error")
 }

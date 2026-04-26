@@ -1,6 +1,6 @@
 export const store = {
-  loading: false,
-  data: null,
   jd: "",
-  mode: "default"
+  mode: "default",
+  loading: false,
+  result: null,
 }

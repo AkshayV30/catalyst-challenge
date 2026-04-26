@@ -1,5 +1,6 @@
 import httpx
 import time
+
 from app.configs.core_config import settings
 from app.core.loggers import logger
 from app.core.metrics import metrics
@@ -39,19 +40,4 @@ async def generate(model: str, prompt: str):
 
             raise  RuntimeError(f"Ollama failed: {e}")
 
-
-async def generate_stream(model: str, prompt: str):
-    async with httpx.AsyncClient(timeout=None) as client:
-        async with client.stream(
-            "POST",
-            OLLAMA_URL,
-            json={
-                "model": model,
-                "prompt": prompt,
-                "stream": True
-            }
-        ) as res:
-            async for line in res.aiter_lines():
-                if line:
-                    yield line
 

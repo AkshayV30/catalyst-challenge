@@ -20,7 +20,10 @@ def root():
         </body>
     </html>
     """
-
+# METRICS
+@router.get("/metrics")
+def get_metrics():
+    return metrics.snapshot()
 
 # DATA APIs - for testing and validation
 @router.get("/candidates")
@@ -45,10 +48,3 @@ async def scout(payload: dict):
         raise HTTPException(status_code=400, detail="Missing 'jd' field")
 
     return await run_pipeline(jd, mode)
-
-# METRICS
-@router.get("/metrics")
-def get_metrics():
-    return metrics.snapshot()
-
-

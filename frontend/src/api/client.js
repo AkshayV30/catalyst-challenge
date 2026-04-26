@@ -14,8 +14,4 @@ async function request(endpoint, payload) {
   return res.json()
 }
 
-export const scoutAPI = {
-  run: (payload) => request("/scout", payload),
-}
-
-// add enpoints for candidatea snd jobs
+export { BASE_URL, request }

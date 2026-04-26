@@ -1,49 +1,42 @@
-function createCandidateCard(c) {
-  const div = document.createElement("div")
-  div.className = "card result-card"
-
-  div.innerHTML = `
-    <div class="rank">#${c.rank ?? "-"}</div>
-
-    <h3>${c.name ?? "Unknown"}</h3>
-    <p><b>Role:</b> ${c.role ?? "-"}</p>
-
-    <div class="scores">
-      <span>Match: ${safeNum(c.match_score)}</span>
-      <span>Engagement: ${safeNum(c.engagement_score)}</span>
-      <span>Final: ${safeNum(c.final_score)}</span>
-    </div>
-
-    <div class="skills">
-      ${(c.top_skills ?? [])
-        .map(s => `<span>${s}</span>`)
-        .join("")}
-    </div>
-  `
-
-  return div
-}
-
-function safeNum(v) {
-  if (v === null || v === undefined || isNaN(v)) return 0
-  return Number(v).toFixed ? Number(v).toFixed(2) : v
-}
-
-export function renderCandidates(list = [], container) {
+export function renderCandidates(list, containerId) {
+  const container = document.querySelector(containerId)
   if (!container) return
 
   container.innerHTML = ""
 
-  const fragment = document.createDocumentFragment()
-
-  for (const c of list) {
-    fragment.appendChild(createCandidateCard(c))
+  if (!list?.length) {
+    container.innerHTML = `<p>No candidates found</p>`
+    return
   }
 
-  container.appendChild(fragment)
-}
+  const fragment = document.createDocumentFragment()
 
-export function appendCandidate(candidate, container) {
-  if (!container) return
-  container.appendChild(createCandidateCard(candidate))
+  list.forEach((c) => {
+    const el = document.createElement("div")
+    el.className = "card result-card"
+
+    el.innerHTML = `
+      <div class="rank">#${c.rank ?? "-"}</div>
+
+      <h3>${c.name ?? "Unknown"}</h3>
+      <p><b>Role:</b> ${c.role ?? "-"}</p>
+      <p><b>Experience:</b> ${c.experience ?? "-"}</p>
+
+      <div class="scores">
+        <span>Match: ${c.match_score ?? 0}</span>
+        <span>Engagement: ${c.engagement_score ?? 0}</span>
+        <span>Final: ${c.final_score ?? 0}</span>
+      </div>
+
+      <div class="skills">
+        ${(c.top_skills || [])
+          .map((s) => `<span>${s}</span>`)
+          .join("")}
+      </div>
+    `
+
+    fragment.appendChild(el)
+  })
+
+  container.appendChild(fragment)
 }

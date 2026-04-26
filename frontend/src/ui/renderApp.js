@@ -7,6 +7,10 @@ export function renderApp() {
         <p>JD → Matching → Engagement → Ranking</p>
       </header>
 
+      <!-- 🔥 JOB LIBRARY -->
+      <section id="jobsTable"></section>
+
+      <!-- INPUT -->
       <section class="panel">
         <textarea id="jdInput" placeholder="Paste JD..."></textarea>
 
@@ -23,12 +27,10 @@ export function renderApp() {
 
       <div id="statusBox">Idle</div>
 
-      <section class="metrics">
-        <div class="card">Total: <span id="total">-</span></div>
-        <div class="card">Shortlisted: <span id="short">-</span></div>
-        <div class="card">Latency: <span id="latency">-</span></div>
-      </section>
+      <!-- CANDIDATES -->
+      <section id="candidatesTable"></section>
 
+      <!-- RESULTS -->
       <section id="results"></section>
 
     </div>

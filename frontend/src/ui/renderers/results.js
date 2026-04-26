@@ -6,13 +6,31 @@ export function renderResultsTable(list = [], meta = {}) {
   const container = $("#results")
 
   const columns = [
-    { label: "Rank", render: c => `#${safe(c.rank)}` },
-    { label: "Name", render: c => safe(c.name) },
-    { label: "Role", render: c => safe(c.role) },
-    { label: "Match", render: c => safe(c.match_score) },
-    { label: "Engagement", render: c => safe(c.engagement_score) },
-    { label: "Final", render: c => safe(c.final_score) },
-  ]
+  { label: "Rank", render: c => `#${safe(c.rank)}` },
+  { label: "Name", render: c => safe(c.name) },
+  { label: "Role", render: c => safe(c.role) },
+
+  {
+    label: "Match",
+    render: c => `${safe(c.match_score)}`
+  },
+
+  {
+    label: "Interest",
+    render: c => `${safe(c.engagement_score)}`
+  },
+
+  {
+    label: "Why Selected",
+    render: c => `
+      <div class="explain">
+        <div><b>Skills:</b> ${(c.matched_skills || []).join(", ")}</div>
+        <div><b>Match:</b> ${safe(c.match_reason)}</div>
+        <div><b>Interest:</b> ${safe(c.engagement_reason)}</div>
+      </div>
+    `
+  }
+]
 
   const summary = `
     <div class="summary">

@@ -183,19 +183,10 @@ http://localhost:5173
 
 ---
 
-# 🧠 Core Capabilities
 
-* 🧾 JD Parsing (LLM-based structured extraction)
-* 🔎 Candidate discovery engine
-* 🧠 Match scoring system
-* 💬 Engagement simulation
-* 📊 Dual-score ranking system
-* 🧾 Explainable AI decisions
-* 🔁 Multi-model LLM routing
 
----
 
-# ⚙️ System Design Principles
+#  System Design Principles
 
 * Modular microservice-style backend
 * LLM abstraction layer (router-based)
@@ -206,7 +197,7 @@ http://localhost:5173
 
 ---
 
-# 📌 Environment Summary
+#  Environment Summary
 
 | Component | Technology          |
 | --------- | ------------------- |
@@ -218,32 +209,3 @@ http://localhost:5173
 | Config    | ENV-based system    |
 
 ---
-
-# 🏁 Project Status
-
-* ✅ Backend pipeline complete
-* ✅ LLM routing system active
-* ✅ Candidate ranking system working
-* ✅ Engagement simulation integrated
-* ⚠️ Frontend UI enhancements ongoing
-* ⚠️ Real-time streaming optional upgrade
-
----
-
-# 📈 Future Enhancements
-
-* WebSocket real-time pipeline
-* Resume upload + parsing
-* Bias detection system
-* Advanced analytics dashboard
-* Docker + Kubernetes deployment
-* Cloud LLM integration (OpenAI / Vertex AI)
-
----
-
-If you want next upgrade, I can also generate:
-
-* 🎯 **super polished “one-page startup pitch README”**
-* 🧭 **interactive architecture diagram (SVG / draw.io)**
-* 🐳 **full Dockerized production setup**
-* 📊 **system design interview explanation script**

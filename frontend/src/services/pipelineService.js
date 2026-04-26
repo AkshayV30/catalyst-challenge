@@ -1,6 +1,5 @@
 import { scoutAPI } from "../api/scout.api.js"
 
-
 export async function runPipeline(jd, mode) {
   store.loading = true
   store.jd = jd

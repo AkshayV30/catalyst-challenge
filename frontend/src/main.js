@@ -1,46 +1,25 @@
 import "./style.css"
 
-import { renderApp } from "./ui/renderApp.js"
-import {  initTabs } from "./ui/tabs.js"
-import { runPipeline } from "./services/pipelineService.js"
+import { renderApp } from "./ui/app/renderApp.js"
 
-import { showLoading, showDone, showError, initLoader } from "./ui/loader"
-import { renderJobsTable } from "./ui/renderJobsTable"
-import { renderCandidatesTable } from "./ui/renderCandidatesTable"
-import { renderResultsTable } from "./ui/renderResultsTable"
+import { initTabs } from "./ui/components/Tabs/tabs.controller.js"
+import { initPipeline } from "./ui/components/PipeLine/pipeline.controller.js"
+import { initJobInput } from "./ui/components/JobInput/jobinput.controller.js"
 
-// ---------------- INIT ----------------
+import { initLoader } from "./ui/utils/loader.js"
+
+import { renderJobsTable } from "./ui/renderers/jobs.js"
+import { renderCandidatesTable } from "./ui/renderers/candidates.js"
+
+// render UI
 renderApp()
 
+// init behaviors
 initTabs()
 initLoader()
+initPipeline()
+initJobInput()
 
-// DOM refs AFTER render
-const jdInput = document.querySelector("#jdInput")
-const modeSelect = document.querySelector("#mode")
-const runBtn = document.querySelector("#runBtn")
-
-// ---------------- LOAD DATA ----------------
+// load data
 renderJobsTable()
 renderCandidatesTable()
-
-// ---------------- RUN PIPELINE ----------------
-runBtn.onclick = async () => {
-  const jd = jdInput.value
-  const mode = modeSelect.value
-
-  if (!jd) return alert("Enter Job Description")
-
-  try {
-    showLoading("Processing JD")
-
-    const data = await runPipeline(jd, mode)
-
-    showDone()
-    renderResultsTable(data.shortlist, data)
-
-  } catch (err) {
-    console.error(err)
-    showError("Pipeline failed")
-  }
-}

@@ -122,7 +122,7 @@ button:hover {
   box-shadow: var(--shadow);
 }
 
-/* ----------- STATUS (IMPROVED VISUAL HIERARCHY) ----------- */
+/* ----------- STATUS  ----------- */
 .status-wrapper {
   margin-top: 16px;
   padding-top: 12px;
@@ -254,4 +254,78 @@ button:hover {
 @keyframes fade {
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Job INPUT ---------- */
+.job-input textarea {
+  width: 100%;
+  min-height: 140px;
+  resize: vertical;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  font-family: var(--mono);
+  box-sizing: border-box;
+}
+
+/* smoother UX */
+.job-input textarea:focus {
+  outline: none;
+  border-color: var(--accent-border);
+  box-shadow: 0 0 0 2px var(--accent-bg);
+}
+
+/* Controls layout */
+.controls {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 200px;
+}
+
+.control-group label {
+  font-size: 12px;
+  margin-bottom: 4px;
+  opacity: 0.7;
+}
+
+/* Button */
+.primary-btn {
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  color: var(--accent);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Mode description */
+.mode-desc {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  background: var(--code-bg);
+  font-size: 13px;
+}
+
+/* Muted text */
+.muted {
+  opacity: 0.7;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .controls {
+    flex-direction: column;
+  }
+
+  .primary-btn {
+    width: 100%;
+  }
 }

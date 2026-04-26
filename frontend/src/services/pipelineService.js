@@ -1,4 +1,5 @@
 import { scoutAPI } from "../api/scout.api.js"
+import { store } from "../store/appStore.js"
 
 export async function runPipeline(jd, mode) {
   store.loading = true
@@ -7,7 +8,6 @@ export async function runPipeline(jd, mode) {
 
   try {
     const data = await scoutAPI.run({ jd, mode })
-
     store.result = data
     return data
   } finally {

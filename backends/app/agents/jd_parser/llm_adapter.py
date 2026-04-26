@@ -1,6 +1,6 @@
 from app.router.llm_router import route
 from app.utils.json_utils import extract_json
-from app.prompts.templates import jd_parser_prompt
+from app.agents.jd_parser.prompts import jd_parser_prompt
 
 
 async def parse_jd(jd: str):

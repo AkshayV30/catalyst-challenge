@@ -1,6 +1,6 @@
 from app.router.llm_router import route
 from app.utils.json_utils import extract_json
-from app.prompts.templates import match_prompt
+from app.agents.candidates.prompts import match_prompt
 
 
 async def match(jd: str, candidate: str):

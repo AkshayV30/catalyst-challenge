@@ -15,3 +15,4 @@ logger.add(
     retention="7 days",
     level="DEBUG"
 )
+

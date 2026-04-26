@@ -1,17 +1,11 @@
-const BASE_URL = "http://localhost:8008"
-
-export async function runScout(payload) {
-  const res = await fetch(`${BASE_URL}/scout`, {
+export async function runScouting({ jd, mode }) {
+  const res = await fetch("http://localhost:8000/scout", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(payload)
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ jd, mode })
   })
 
-  if (!res.ok) {
-    throw new Error("API request failed")
-  }
+  if (!res.ok) throw new Error("API failed")
 
-  return res.json()
+  return await res.json()
 }

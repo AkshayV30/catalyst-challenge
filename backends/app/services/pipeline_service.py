@@ -1,9 +1,10 @@
 import time
 import asyncio
 
-from app.agents.jd_parser import parse_jd
-from app.agents.candidate_matcher import match
-from app.agents.engagement_agent import engagement
+from app.agents.jd_parser.llm_adapter import parse_jd
+from app.agents.candidates.matcher import match
+from app.agents.candidates.discovery import CandidateDiscoveryAgent
+from app.agents.engagements import EngagementAgent
 
 from app.services.ranking_service import rank
 from app.services.shortlist_service import build_shortlist
@@ -19,23 +20,23 @@ from app.validators.jd_validator import validate_jd
 
 from app.core.loggers import logger
 
+from app.router.llm_router import route
 
 SEMAPHORE = asyncio.Semaphore(5)
-
+engagement_agent = EngagementAgent(llm_router=route)
 
 async def run_pipeline(jd: str, mode: str = "default"):
     start = time.time()
 
-    mode_config = resolve_mode_config(mode)
-    score_weights = resolve_weights(mode_config)
+    config = resolve_mode_config(mode)
+    score_weights = resolve_weights(config)
  
 
     structured_jd = await _parse_jd_safe(jd)
 
     candidates = load_candidates()
 
-
-    prefiltered = prefilter_candidates(candidates, structured_jd, mode_config)
+    prefiltered = prefilter_candidates(candidates, structured_jd, config)
 
     logger.info(
         f"Prefilter ({mode}): {len(prefiltered)}/{len(candidates)}"
@@ -44,13 +45,17 @@ async def run_pipeline(jd: str, mode: str = "default"):
     if not prefiltered:
         return _empty_response(structured_jd, start)
 
-    results = await asyncio.gather(
-        *[_process_candidate(c, structured_jd) for c in prefiltered]
-    )
+    discovery = CandidateDiscoveryAgent(prefiltered)
+    retrieved = discovery.retrieve(structured_jd)
 
+    results = await asyncio.gather(*[
+        _process_candidate(item["candidate"], structured_jd)
+        for item in retrieved
+    ])
+        
     ranked = rank(results, score_weights)
 
-    final_results = postfilter_candidates(ranked, max_results=10)
+    final_results = postfilter_candidates(ranked)
 
     shortlist = build_shortlist(final_results)
 
@@ -59,7 +64,9 @@ async def run_pipeline(jd: str, mode: str = "default"):
         "mode": mode,
         "weights": score_weights,
 
-        "total_candidates": len(prefiltered),
+        "total_candidates": len(candidates),
+        "after_prefilter": len(prefiltered),
+        "after_retrieval": len(retrieved),
         "shortlist_count": len(shortlist),
 
         "shortlist": shortlist,
@@ -75,54 +82,48 @@ async def _parse_jd_safe(jd: str):
     try:
         raw = await parse_jd(jd)
 
-       
-        if isinstance(raw, dict):
-            return raw
+        raw = extract_json(raw) if isinstance(raw, str) else raw
 
-      
-        elif isinstance(raw, str):
-            parsed = extract_json(raw)
+        if not isinstance(raw, dict):
+            raw = {}
 
-            if not parsed:
-                raise ValueError("Empty JD JSON")
+        cleaned = {
+            "role": str(raw.get("role") or "Unknown Role"),
+            "skills": list(raw.get("skills") or []),
+            "experience_years": float(raw.get("experience_years") or 0),
+            "must_have": list(raw.get("must_have") or []),
+            "nice_to_have": list(raw.get("nice_to_have") or [])
+        }
 
-            return validate_jd(jd, parsed) 
-
-        
-        raise TypeError(f"Unsupported JD response type: {type(raw)}")
+        return validate_jd(jd, cleaned)
 
     except Exception as e:
         logger.error(f"JD parsing failed: {e}")
+
         return {
-            "role": None,
+            "role": "Unknown Role",
             "skills": [],
-            "experience_years": None,
+            "experience_years": 0,
             "must_have": [],
             "nice_to_have": []
-            }
+        }
 
 
-async def _process_candidate(c, structured_jd):
+async def _process_candidate(candidate, structured_jd):
     async with SEMAPHORE:
         try:
-            candidate_text = format_candidate(c)
-
-            match_task = asyncio.create_task(
-                match(structured_jd, candidate_text)
-            )
-
-            engagement_task = asyncio.create_task(
-                engagement(structured_jd, candidate_text)
-            )
+            candidate_text = format_candidate(candidate)
 
             match_raw, engagement_raw = await asyncio.gather(
-                match_task, engagement_task
+                match(structured_jd, candidate_text),
+                engagement_agent.engage(structured_jd, candidate)
             )
 
+
             return {
-                "candidate": c,
+                "candidate": candidate,
                 "match": extract_json(match_raw),
-                "engagement": extract_json(engagement_raw),
+                "engagement":engagement_raw,
                 "raw": {
                     "match": match_raw,
                     "engagement": engagement_raw
@@ -130,10 +131,10 @@ async def _process_candidate(c, structured_jd):
             }
 
         except Exception as e:
-            logger.error(f"Candidate {c.get('id')} failed: {e}")
+            logger.error(f"Candidate {candidate.get('id')} failed: {e}")
 
             return {
-                "candidate": c,
+                "candidate": candidate,
                 "error": str(e),
                 "match": {"match_score": 0, "reasons": []},
                 "engagement": {"interest_score": 0, "signals": [], "reply": ""}

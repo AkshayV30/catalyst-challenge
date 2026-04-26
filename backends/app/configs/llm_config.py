@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import Dict, List
 import os
 from dotenv import load_dotenv
+from app.core.loggers import logger  # your loguru logger
 
 load_dotenv()
 
@@ -11,26 +12,48 @@ class TaskConfig:
     models: List[str]
 
 
+class ConfigError(ValueError):
+    pass
+
+
 def parse_env_list(key: str, default: List[str]) -> List[str]:
     value = os.getenv(key)
-    if not value:
-        return default
-    return [v.strip() for v in value.split(",") if v.strip()]
+    return [v.strip() for v in value.split(",") if v.strip()] if value else default
 
 
 TASKS = ["jd_parser", "matcher", "engagement"]
 
 
 def load_config(task: str) -> TaskConfig:
-    return TaskConfig(
-        models=parse_env_list(
-            f"{task.upper()}_MODELS",
-            parse_env_list(f"DEFAULT_{task.upper()}_MODELS", [])
-        )
+    models = (
+        parse_env_list(f"{task.upper()}_MODELS", [])
+        or parse_env_list(f"DEFAULT_{task.upper()}_MODELS", [])
     )
 
+    if not models:
+        msg = f"[CONFIG_ERROR] No models configured for task='{task}'"
 
-LLM_CONFIG: Dict[str, TaskConfig] = {
-    task: load_config(task)
-    for task in TASKS
-}
+        #  structured logging (this is the important part)
+        logger.error(msg)
+        logger.error(
+            f"Expected env: {task.upper()}_MODELS or DEFAULT_{task.upper()}_MODELS"
+        )
+
+        raise ConfigError(msg)
+
+    logger.info(f"[CONFIG] {task} loaded with models={models}")
+
+    return TaskConfig(models=models)
+
+
+try:
+    LLM_CONFIG: Dict[str, TaskConfig] = {
+        task: load_config(task)
+        for task in TASKS
+    }
+
+    logger.info("[CONFIG] LLM configuration loaded successfully")
+
+except ConfigError as e:
+    logger.critical(f"[CONFIG_BOOT_FAIL] {e}")
+    raise

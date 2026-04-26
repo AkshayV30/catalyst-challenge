@@ -24,7 +24,7 @@ Before starting, ensure you have:
 ## 1. Clone Repository
 
 ```bash
-git clone https://github.com/your-username/ai-talent-scouting.git
+git clone https://github.com/AkshayV30/catalyst-challenge.git
 cd backend
 ```
 
@@ -204,7 +204,7 @@ logs/
 
 ---
 
-# ⚙️ System Modes
+#  System Modes
 
 You can control pipeline behavior using:
 
